@@ -16,6 +16,13 @@ CMP = 0b10100111
 JMP = 0b01010100
 JEQ = 0b01010101
 JNE = 0b01010110
+AND = 0b10101000
+OR = 0b10101010
+XOR = 0b10101011
+NOT = 0b01101001
+SHL = 0b10101100
+SHR = 0b10101101
+MOD = 0b10100100
 
 
 class CPU:
@@ -55,28 +62,7 @@ class CPU:
         else:
             print("File name as a second argument is missing. Ex.: python ls8.py filename")
             sys.exit(1)
-        # space_for_stack = len(self.ram) - address
-        # print(space_for_stack)
 
-        # print(self.reg)
-
-        # address = 0
-
-        # # For now, we've just hardcoded a program:
-
-        # program = [
-        #     # From print8.ls8
-        #     0b10000010, # LDI R0,8
-        #     0b00000000,
-        #     0b00001000,
-        #     0b01000111, # PRN R0
-        #     0b00000000,
-        #     0b00000001, # HLT
-        # ]
-
-        # for instruction in program:
-        #     self.ram[address] = instruction
-        #     address += 1
 
     def ram_read(self, address):
         """ read from ram by specified address and returns stored value"""
@@ -105,8 +91,27 @@ class CPU:
                 self.fl = 0b00000100
             elif self.reg[reg_a] > self.reg[reg_b]:
                 self.fl = 0b00000010
-            # else:
-            #     self.fl = 0b00000000
+
+        elif op == AND:
+            self.reg[reg_a] = self.reg[reg_a] & self.reg[reg_b]
+
+        elif op == OR:
+            self.reg[reg_a] = self.reg[reg_a] | self.reg[reg_b]
+
+        elif op == XOR:
+            self.reg[reg_a] = self.reg[reg_a] ^ self.reg[reg_b]
+
+        elif op == NOT:
+            self.reg[reg_a] = ~self.reg[reg_a]
+
+        elif op == SHL:
+            self.reg[reg_a] = self.reg[reg_a] << self.reg[reg_b]
+
+        elif op == SHR:
+            self.reg[reg_a] = self.reg[reg_a] >> self.reg[reg_b]
+
+        elif op == MOD:
+            pass
 
 
         
