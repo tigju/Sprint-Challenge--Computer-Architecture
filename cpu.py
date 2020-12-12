@@ -13,7 +13,7 @@ POP = 0b01000110
 CALL = 0b01010000
 RET = 0b00010001
 CMP = 0b10100111
-
+JMP = 0b01010100
 
 
 
@@ -186,6 +186,9 @@ class CPU:
         elif instruction == CMP:
             self.alu(instruction, operand_a, operand_b)
             self.pc += 3
+
+        elif instruction == JMP:
+            self.pc = self.reg[operand_a]
         
         elif instruction == HLT:
             self.halted = True
