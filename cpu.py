@@ -5,9 +5,6 @@ import sys
 LDI = 0b10000010
 PRN = 0b01000111
 HLT = 0b00000001
-ADD = 0b10100000
-SUB = 0b10100001
-MUL = 0b10100010
 PUSH = 0b01000101
 POP = 0b01000110
 CALL = 0b01010000
@@ -16,6 +13,11 @@ CMP = 0b10100111
 JMP = 0b01010100
 JEQ = 0b01010101
 JNE = 0b01010110
+
+ADD = 0b10100000
+SUB = 0b10100001
+MUL = 0b10100010
+DIV = 0b10100011
 AND = 0b10101000
 OR = 0b10101010
 XOR = 0b10101011
@@ -84,6 +86,13 @@ class CPU:
         elif op == MUL:
             self.reg[reg_a] *= self.reg[reg_b]
         
+        elif op == DIV:
+            if reg_b != 0:
+                self.reg[reg_a] /= self.reg[reg_b]
+            else:
+                print(f"Error division by zero!")
+                sys.exit(1)
+
         elif op == CMP:
             if self.reg[reg_a] == self.reg[reg_b]:
                 self.fl = 0b00000001
@@ -163,6 +172,14 @@ class CPU:
             self.pc += 3
         
         elif instruction == ADD:
+            self.alu(instruction, operand_a, operand_b)
+            self.pc += 3
+        
+        elif instruction == SUB:
+            self.alu(instruction, operand_a, operand_b)
+            self.pc += 3
+
+        elif instruction == DIV:
             self.alu(instruction, operand_a, operand_b)
             self.pc += 3
 
