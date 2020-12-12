@@ -14,7 +14,8 @@ CALL = 0b01010000
 RET = 0b00010001
 CMP = 0b10100111
 JMP = 0b01010100
-
+JEQ = 0b01010101
+JNE = 0b01010110
 
 
 class CPU:
@@ -190,6 +191,18 @@ class CPU:
         elif instruction == JMP:
             self.pc = self.reg[operand_a]
         
+        elif instruction == JEQ:
+            if self.fl == 1:
+                self.pc = self.reg[operand_a]
+            else:
+                self.pc += 2
+
+        elif instruction == JNE:
+            if self.fl != 1:
+                self.pc = self.reg[operand_a]
+            else:
+                self.pc += 2
+
         elif instruction == HLT:
             self.halted = True
             self.pc += 1
