@@ -102,8 +102,9 @@ class CPU:
             self.reg[reg_a] = self.reg[reg_a] ^ self.reg[reg_b]
 
         elif op == NOT:
-            self.reg[reg_a] = ~self.reg[reg_a]
-
+            # & 0b11111111 is a quick fix to avoid negative value and flip zeros and ones
+            self.reg[reg_a] = ~self.reg[reg_a] & 0b11111111
+            
         elif op == SHL:
             self.reg[reg_a] = self.reg[reg_a] << self.reg[reg_b]
 
@@ -111,7 +112,11 @@ class CPU:
             self.reg[reg_a] = self.reg[reg_a] >> self.reg[reg_b]
 
         elif op == MOD:
-            pass
+            if self.reg[reg_b] != 0:
+                self.reg[reg_a] = self.reg[reg_a] % self.reg[reg_b]
+            else:
+                print(f"Error division by zero!")
+                sys.exit(1)
 
 
         
@@ -207,6 +212,34 @@ class CPU:
                 self.pc = self.reg[operand_a]
             else:
                 self.pc += 2
+        
+        elif instruction == AND:
+            self.alu(instruction, operand_a, operand_b)
+            self.pc += 3
+
+        elif instruction == OR:
+            self.alu(instruction, operand_a, operand_b)
+            self.pc += 3
+
+        elif instruction == XOR:
+            self.alu(instruction, operand_a, operand_b)
+            self.pc += 3
+
+        elif instruction == NOT:
+            self.alu(instruction, operand_a, operand_b)
+            self.pc += 2
+
+        elif instruction == MOD:
+            self.alu(instruction, operand_a, operand_b)
+            self.pc += 3
+
+        elif instruction == SHL:
+            self.alu(instruction, operand_a, operand_b)
+            self.pc += 3
+
+        elif instruction == SHR:
+            self.alu(instruction, operand_a, operand_b)
+            self.pc += 3
 
         elif instruction == HLT:
             self.halted = True
